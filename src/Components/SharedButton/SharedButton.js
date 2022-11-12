@@ -3,7 +3,7 @@ import React from 'react';
 const SharedButton = ({children}) => {
     return (
         <button 
-        className="btn btn-primary bg-gradient-to-r from-primary to-secondary text-white">{children}</button>
+        className="btn text-white bg-gradient-to-b from-amber-100 via-amber-900 to-amber-600">{children}</button>
     );
 };
 
