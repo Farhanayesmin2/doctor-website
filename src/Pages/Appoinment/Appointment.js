@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ModalShare from '../../Components/BookingModal/ModalShare/ModalShare';
 import AppoinmentBanner from './AppoinmentBanner/AppoinmentBanner';
 import AvailableAppointment from './AvailableAppointment';
 
@@ -13,6 +14,7 @@ const Appointment = () => {
             <AvailableAppointment
                 selectedDate={selectedDate}
             ></AvailableAppointment>
+              <ModalShare ></ModalShare>
         </div>
     );
 };
