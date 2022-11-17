@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 
 import 'react-day-picker/dist/style.css';
 import AuthProvider from './Components/Contexts/AuthProvider/AuthProvider';
+// import AuthProvider from './Components/Contexts/AuthProvider/AuthProvider';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

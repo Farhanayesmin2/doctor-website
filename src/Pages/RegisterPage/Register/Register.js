@@ -1,22 +1,46 @@
-import React from 'react';
-
-import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import React, { useContext, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import { Link } from 'react-router-dom';
+import { AuthContext } from '../../../Components/Contexts/AuthProvider/AuthProvider';
 
 
 const Register = () => {
-     const {
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = useForm();
-  // const [data, setData] = useState("");
+    
+    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { createUser, updateUser } = useContext(AuthContext);
+    const [signUpError, setSignUPError] = useState('')
   const handleRegister = (data) => {
     console.log(data);
     console.log(errors);
+  setSignUPError('');
+        createUser(data.email, data.password)
+            .then(result => {
+                const user = result.user;
+                console.log(user);
+                toast.success('User Created Successfully.')
+                const userInfo = {
+                    displayName: data.name
+                }
+                updateUser(userInfo)
+                    .then(() => { })
+                    .catch(err => console.log(err));
+            })
+            .catch(error => {
+                console.log(error)
+                setSignUPError(error.message)
+            });
+
+
+      
+      
+      
+      
+      
   };
     return (
         <div className="h-[800px] text-accent flex items-center justify-center ">
+           
       <div className="border-1 shadow-current shadow-lg p-8 m-8">
         <h1 className="text-3xl text-center">Register Now</h1> <br />
         <form onSubmit={handleSubmit(handleRegister)}>
@@ -41,7 +65,8 @@ const Register = () => {
             />{" "}
             {errors.email && (
               <p className="text-red-600">{errors.email?.message}</p>
-            )}
+                        )}
+                        
           </div>
           <div>
             <label className="label">
@@ -73,12 +98,13 @@ const Register = () => {
           <input
             type="submit"
             className="btn-accent bg-gradient-to-r from-emerald-300 via-emerald-600 to-emerald-300  btn text-white   mt-4 w-full max-w-xs"
-          />{" "}
+                    />{" "}
+                     {signUpError && <p className='text-red-600'>{signUpError}</p>}
           <label className="label">
             <span className="text-black">
-              Already have an account?
-              <Link className="text-blue-700" to="/login">
-                Please login
+              Already have an Account Here?
+              <Link className="text-blue-700 pl-2" to="/login">
+                Please Login
               </Link>
             </span>
           </label>
