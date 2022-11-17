@@ -1,13 +1,28 @@
 import React from "react";
 
-const ModalShare = ({ treatment,selectedDate }) => {
+const ModalShare = ({ treatment,selectedDate,  setTreatment}) => {
   const { name,slots } = treatment;
 
 const handleBooking = event =>{
-event.preventDefault()
+event.preventDefault();
+const form = event.target;
+const slot = form.slot.value;
+const names = form.names.value;
+const email =form.email.value;
+const phone = form.number.value;
+const date = form.date.value;
 
+const booking = {
 
-    
+treatment: name,
+appoinmentDate: date,   
+patient: names,
+slot,
+phone,
+email,
+}
+console.log(booking);
+setTreatment(null)
 }
 
 
@@ -29,7 +44,7 @@ event.preventDefault()
            Hey,
           </p>
 
-          <form className="grid  grid-cols-1 gap-3">
+          <form  onSubmit={handleBooking}  className="grid  grid-cols-1 gap-3">
             <input
               type="text"
               name='date'
@@ -38,12 +53,13 @@ event.preventDefault()
             />
            <select name='slot' className="select select-accent w-full max-w-xs">
   {
-    slots.map(slot => <option value={slot}  >{slot}</option>)
+    slots.map((slot, i)=> <option value={slot}
+    key={i}  >{slot}</option>)
   }
 </select>
             <input
               type="text"
-              name='name'
+              name='names'
               placeholder="Your Name"
               className="input input-bordered input-accent w-full max-w-xs"
             />

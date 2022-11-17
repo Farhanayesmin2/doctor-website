@@ -30,7 +30,7 @@ const AvailableAppointment = ({ selectedDate }) => {
           ))}{
             treatment && <ModalShare 
             selectedDate={ selectedDate }
-            
+            setTreatment={setTreatment}
             treatment={treatment}  ></ModalShare>
           }
   
