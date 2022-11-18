@@ -1,7 +1,8 @@
-import React from "react";
-
+import React, { useContext, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+
+import { AuthContext } from "../../../Components/Contexts/AuthProvider/AuthProvider";
 
 const Login = () => {
   const {
@@ -9,11 +10,28 @@ const Login = () => {
     formState: { errors },
     handleSubmit,
   } = useForm();
-  // const [data, setData] = useState("");
+  const { signIn } = useContext(AuthContext);
+  const [loginError, setLoginError] = useState("");
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const from = location.state?.from?.pathname || "/";
+
   const handleLogin = (data) => {
     console.log(data);
-    console.log(errors);
+    setLoginError("");
+    signIn(data.email, data.password)
+      .then((result) => {
+        const user = result.user;
+        console.log(user);
+        navigate(from, { replace: true });
+      })
+      .catch((error) => {
+        console.log(error.message);
+        setLoginError(error.message);
+      });
   };
+
   return (
     <div className="h-[800px] text-accent flex items-center justify-center ">
       <div className="border-1 shadow-current shadow-lg p-8 m-8">
@@ -50,7 +68,7 @@ const Login = () => {
             {errors.password && (
               <p className="text-red-600">{errors.password?.message}</p>
             )}
-           
+
             <label className="label">
               <span className="label-text">Forget password?</span>
             </label>
@@ -59,6 +77,9 @@ const Login = () => {
             type="submit"
             className="btn-accent bg-gradient-to-r from-emerald-300 via-emerald-600 to-emerald-300  btn text-white   mt-4 w-full max-w-xs"
           />{" "}
+          <div>
+            {loginError && <p className="text-red-600">{loginError}</p>}
+          </div>
           <label className="label">
             <span className="text-black">
               New to doctors protal?

@@ -18,7 +18,7 @@ const Register = () => {
             .then(result => {
                 const user = result.user;
                 console.log(user);
-                toast.success('User Created Successfully.')
+                toast.success('Register Created Successfully')
                 const userInfo = {
                     displayName: data.name
                 }
@@ -28,7 +28,7 @@ const Register = () => {
             })
             .catch(error => {
                 console.log(error)
-                setSignUPError(error.message)
+                 setSignUPError(error.message)
             });
 
 
