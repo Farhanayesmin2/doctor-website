@@ -1,18 +1,39 @@
+import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import ModalShare from "../../Components/BookingModal/ModalShare/ModalShare";
 import AppoinmentCard from "./AppoinmentCard";
 
 
 
 const AvailableAppointment = ({ selectedDate }) => {
-  const [appointmentTake, setAppoinmentTake] = useState([]);
-  const [treatment, setTreatment]= useState(null);
-  useEffect(() => {
-    fetch("services.json")
-      .then((res) => res.json())
-      .then((data) => setAppoinmentTake(data));
-  }, []);
+    const [treatment, setTreatment] = useState(null);
+    const date = format(selectedDate, 'PP');
+    const { data: appointmentTake = [] } = useQuery({
+        queryKey: ['appointmentOptions', date],
+        queryFn: async () => {
+            const res = await fetch(`http://localhost:5000/services`);
+            const data = await res.json();
+            return data
+        }
+    });
+
+    // if(isLoading){
+    //     return <Loading></Loading>
+    // }
+
+
+
+
+
+
+
+
+  // useEffect(() => {
+  //   fetch("http://localhost:5000/services")
+  //     .then((res) => res.json())
+  //     .then((data) => setAppoinmentTake(data));
+  // }, []);
   return (
     <div className="text-center mt-16">
       <section>
