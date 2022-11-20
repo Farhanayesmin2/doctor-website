@@ -1,10 +1,11 @@
 import React, { useContext } from "react";
 import { AuthContext } from "../../Contexts/AuthProvider/AuthProvider";
 import toast from "react-hot-toast";
+import { format } from "date-fns";
 const ModalShare = ({ treatment, selectedDate, setTreatment }) => {
   const { name: treatmentName, slots } = treatment;
   const { user } = useContext(AuthContext);
-
+ const date = format(selectedDate, 'PP');
   const handleBooking = (event) => {
     event.preventDefault();
     const form = event.target;
@@ -12,7 +13,7 @@ const ModalShare = ({ treatment, selectedDate, setTreatment }) => {
     const names = form.names.value;
     const email = form.email.value;
     const phone = form.number.value;
-    const date = form.date.value;
+
 
     const booking = {
       appointmentDate: date,
@@ -36,13 +37,13 @@ const ModalShare = ({ treatment, selectedDate, setTreatment }) => {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        // if (data.acknowledged) {
-        //   setTreatment(null);
-        //   toast.success("Booking confirmed");
+        if (data.acknowledged) {
+          setTreatment(null);
+          toast.success("Booking confirmed");
       
-        // } else {
-        //   toast.error(data.message);
-        // }
+        } else {
+          toast.error(data.message);
+        }
       });
   };
 
@@ -64,8 +65,8 @@ const ModalShare = ({ treatment, selectedDate, setTreatment }) => {
           <form onSubmit={handleBooking} className="grid  grid-cols-1 gap-3">
             <input
               type="text"
-              name="date"
-              value={selectedDate}
+              name="formatdate"
+              value={date}
               disabled
               className="input input-bordered input-accent w-full max-w-xs"
             />

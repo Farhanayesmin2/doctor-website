@@ -1,6 +1,4 @@
 import React from 'react';
-
-
 const AppoinmentCard = ({appointment,setTreatment}) => {
     const {name,slots} = appointment;
     return (
