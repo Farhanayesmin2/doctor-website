@@ -1,33 +1,29 @@
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import ModalShare from "../../Components/BookingModal/ModalShare/ModalShare";
+import Loading from "../Shared/Loading/Loading";
 import AppoinmentCard from "./AppoinmentCard";
 
-
-
 const AvailableAppointment = ({ selectedDate }) => {
-    const [treatment, setTreatment] = useState(null);
-    const date = format(selectedDate, 'PP');
-    const { data: appointmentTake = [] } = useQuery({
-        queryKey: ['appointmentTake', date],
-        queryFn: async () => {
-            const res = await fetch(`http://localhost:5000/services?date=${date}`);
-            const data = await res.json();
-            return data
-        }
-    });
+  const [treatment, setTreatment] = useState(null);
+  const date = format(selectedDate, "PP");
+  const {
+    data: appointmentTake = [],
+    refetch,
+    isLoading,
+  } = useQuery({
+    queryKey: ["appointmentTake", date],
+    queryFn: async () => {
+      const res = await fetch(`http://localhost:5000/services?date=${date}`);
+      const data = await res.json();
+      return data;
+    },
+  });
 
-    // if(isLoading){
-    //     return <Loading></Loading>
-    // }
-
-
-
-
-
-
-
+  if (isLoading) {
+    return <Loading></Loading>;
+  }
 
   // useEffect(() => {
   //   fetch("http://localhost:5000/services")
@@ -48,13 +44,15 @@ const AvailableAppointment = ({ selectedDate }) => {
               key={appointment._id}
               setTreatment={setTreatment}
             ></AppoinmentCard>
-          ))}{
-            treatment && <ModalShare 
-            selectedDate={ selectedDate }
-            setTreatment={setTreatment}
-            treatment={treatment}  ></ModalShare>
-          }
-  
+          ))}
+          {treatment && (
+            <ModalShare
+              selectedDate={selectedDate}
+              setTreatment={setTreatment}
+              refetch={refetch}
+              treatment={treatment}
+            ></ModalShare>
+          )}
         </div>
       </section>
     </div>

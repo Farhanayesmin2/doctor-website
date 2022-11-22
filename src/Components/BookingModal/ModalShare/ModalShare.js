@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { AuthContext } from "../../Contexts/AuthProvider/AuthProvider";
 import toast from "react-hot-toast";
 import { format } from "date-fns";
-const ModalShare = ({ treatment, selectedDate, setTreatment }) => {
+const ModalShare = ({ treatment, selectedDate, setTreatment,refetch }) => {
   const { name: treatmentName, slots } = treatment;
   const { user } = useContext(AuthContext);
  const date = format(selectedDate, 'PP');
@@ -40,9 +40,10 @@ const ModalShare = ({ treatment, selectedDate, setTreatment }) => {
         if (data.acknowledged) {
           setTreatment(null);
           toast.success("Booking confirmed");
-      
+       refetch();
         } else {
           toast.error(data.message);
+         
         }
       });
   };
